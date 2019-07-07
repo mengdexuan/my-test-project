@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/my_test_project?characterEncoding=utf8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate.format_sql: true
+      hibernate.id.new_generator_mappings: false
+      hibernate.physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  #禁用thymeleaf缓存，修改 html 代码后，不需要重启就能生效
+  thymeleaf:
+    cache: false
+
+
+server:
+  port: 1019 #项目端口
+  servlet:
+    context-path: /testProject #项目名称
+  tomcat:
+    basedir: /testProject
+
+
+#清分上传的FSN文件路径
+fsn:
+  path: C:\Users\18514\Desktop\download\fsn
+
+
+#是否支持把流转，true（支持）  或  false(不支持)
+support:
+  handle: true
+
+#任务中的散捆或散把是否类比包也生成GZH   true（生成）  或  false(不生成)  bundle(捆)  handle(把)
+gzh:
+  make:
+    bundle: false
+    handle: false
+
+logging:
+    level:
+        ROOT: INFO
+        com.tangquan: INFO
+    #与logback.xml中配置的日志路径保持一致
+    info-log: log/info.log
+    error-log: log/error.log

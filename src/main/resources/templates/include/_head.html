@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body><!--头部引入公共配置-->
+<head th:fragment="head">
+        <meta charset="utf-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/switch/css/bootstrap-switch.css}"/>
+        <script type="text/javascript" th:src="@{/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/layer2.4/layer.js}"></script>
+        <script type="text/javascript" th:src="@{/switch/js/bootstrap-switch.js}"></script>
+        <script th:inline="javascript">
+                var ctx = [[@{/}]];
+                ctx = ctx.substr(0, ctx.length - 1)
+        </script>
+</head>
+</body>
+</html>
