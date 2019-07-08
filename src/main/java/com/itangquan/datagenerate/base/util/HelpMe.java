@@ -10,7 +10,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.BeanInfo;
@@ -26,7 +26,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -37,32 +36,18 @@ import java.util.zip.ZipOutputStream;
 /**
  * Created by meng on 15-11-16.
  */
+@Slf4j
 public class HelpMe {
-
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(HelpMe.class);
 
     private Map<String, Object> map = new HashMap<String, Object>();
 
     private List list = new ArrayList();
 
-    public static DateFormat yyyy_MM_dd_HH_mm_ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//年月日时分秒
-    public static DateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd");//年月日
-    public static DateFormat yyyy_MM = new SimpleDateFormat("yyyy-MM");//年月
-    public static DateFormat yyyy = new SimpleDateFormat("yyyy");//年
-    public static DateFormat MM = new SimpleDateFormat("MM");//月
-
-
-    public static Date parseStrTime2Date(String time, DateFormat simpleDateFormat) throws ParseException {
-
-        return simpleDateFormat.parse(time);
-
-    }
-
-    public static String formatDate2StrTime(Date date, DateFormat simpleDateFormat) {
-        if (date == null)
-            return "";
-        return simpleDateFormat.format(date);
-    }
+    public static String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";//年月日时分秒
+    public static String yyyy_MM_dd = "yyyy-MM-dd";//年月日
+    public static String yyyy_MM ="yyyy-MM";//年月
+    public static String yyyy = "yyyy";//年
+    public static String MM = "MM";//月
 
 
     /**
@@ -73,6 +58,12 @@ public class HelpMe {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+    /**
+     * 以父目录为基础创建目录，并返回创建的子目录
+     * @param parentDir
+     * @param subDir
+     * @return
+     */
     public static String createDir(String parentDir,String subDir){
         String dir = parentDir + File.separator + subDir;
         FileUtil.mkdir(dir);
@@ -125,51 +116,6 @@ public class HelpMe {
         Pattern pattern = Pattern.compile("[0-9]*");
         return pattern.matcher(str).matches();
     }
-
-
-    /**
-     * 获取指定天（秒）数后的日期
-     * 说明：如果传入可变参数，结果是秒数，不传，是天数
-     * @param date 当前日期
-     * @param dayOrSecond  指定天（秒）数
-     * @return 指定天（秒）数后的日期
-     */
-    public static Date nextDate(Date date, Integer dayOrSecond,Object... obj) {
-
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-
-        if(obj!=null&&obj.length>0){
-            calendar.add(calendar.SECOND, dayOrSecond);//指定秒数后的时间
-        }else{
-            calendar.add(calendar.DAY_OF_YEAR, dayOrSecond);//指定天数后的时间
-        }
-        return calendar.getTime();
-    }
-
-    /**
-     * 获取指定天（秒）数前的日期
-     * 说明：如果传入可变参数，结果是秒数，不传，是天数
-     * @param date 当前日期
-     * @param dayOrSecond  指定天（秒）数
-     * @return 指定天（秒）数前的日期
-     */
-    public static Date prevDate(Date date, Integer dayOrSecond,Object... obj) {
-        return nextDate(date, -dayOrSecond,obj);
-    }
-
-    /**
-     * 如果 date1 大于 date1 则返回 1，否则返回 0
-     *
-     * @param date1
-     * @param date2
-     * @return
-     */
-   /* public static int compareDate(Date date1, Date date2) {
-        long time1 = date1.getTime();
-        long time2 = date2.getTime();
-        return time1 > time2 ? 1 : 0;
-    }*/
 
 
     /**
@@ -1273,10 +1219,7 @@ public class HelpMe {
 
             File file = new File(filepath);
             if (!file.isDirectory()) {
-                // System.out.println("文件");
-                // System.out.println("path=" + file.getPath());
-                // System.out.println("absolutepath=" + file.getAbsolutePath());
-                // System.out.println("name=" + file.getName());
+
                 String xmlFile = file.getName();
                 if (xmlFile.endsWith("xml")) {
                     xmlFileList.add(xmlFile);
@@ -1315,29 +1258,7 @@ public class HelpMe {
     }
 
 
-    /**
-     * 根据传入的日期及天数，计数最近 recentlyDay 天的日期集合
-     * @param currDate
-     * @param recentlyDay
-     * @param obj 可变参数为空：计算当前日期以前的日期；不为空：计算当前日期以后的日期
-     * @return
-     */
 
-    public static List<String> recentlyDayList(Date currDate,Integer recentlyDay,Object... obj){
-
-        List<String> dateList = new ArrayList<String>();
-        for(int i = 1;i <= recentlyDay;i++){
-            dateList.add(formatDate2StrTime(currDate,yyyy_MM_dd_HH_mm_ss).split(" ")[0]);
-            if(obj!=null && obj.length>0){
-                currDate = nextDate(currDate, 1);
-            }else{
-                currDate = prevDate(currDate, 1);
-            }
-        }
-//		System.out.println(dateList);
-
-        return dateList;
-    }
 
     /**
      * 对来自 recentlyDayList(Date currDate,Integer recentlyDay) 方法的数据进行转换
@@ -1394,26 +1315,7 @@ public class HelpMe {
     }
 
 
-    /**
-     * @param currDate
-     * @param firstDayOfWeek  指示一个星期中的第一天  Calendar.SUNDAY（以周日为首日）  Calendar.MONDAY（以周一为首日）
-     * @param flag
-     * @return
-     */
-    public static List<String> weekDayList(Date currDate,int firstDayOfWeek,boolean flag){
-        Date date = getFirstDayOfWeek(currDate, firstDayOfWeek);
-        List<String> recentlyDayList = recentlyDayList(date,7,"asdf");
-        if(!flag){//得到上周日期
-            try {
-                Date tempDate = parseStrTime2Date(recentlyDayList.get(0), yyyy_MM_dd);
-                Date newDate = prevDate(tempDate, 7);
-                recentlyDayList = recentlyDayList(newDate,7,"asdf");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return recentlyDayList;
-    }
+
 
     /**
      * 根据当前时间获取当前月份的天数
@@ -1752,7 +1654,7 @@ public class HelpMe {
             compress(sourceFile, zos, sourceFile.getName(), KeepDirStructure);
             long end = System.currentTimeMillis();
             System.out.println("压缩完成，耗时：" + (end - start) + " ms");
-            logger.info("压缩完成，耗时：" + (end - start) + " ms");
+            log.info("压缩完成，耗时：" + (end - start) + " ms");
         } catch (Exception var16) {
             throw new RuntimeException("zip error from ZipUtils", var16);
         } finally {
