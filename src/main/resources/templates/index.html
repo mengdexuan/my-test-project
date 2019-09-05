@@ -7,8 +7,7 @@
 <body style="background-color: #d8d8d8">
 <div class="container-fluid" style="margin-top: 2%">
     <div class="row" style="margin-top: 10px;">
-        <div class="col-md-2"></div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <input type="hidden" value="info" id="logType"/>
             <button class="btn btn-success" type="button" onclick="changeLog('info')">INFO日志</button>
             &nbsp;&nbsp;
@@ -18,7 +17,9 @@
             &nbsp;&nbsp;
             <button class="btn btn-warning" type="button" onclick="logTrigger()">日志打印(on/off)</button>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
+            <a class="btn btn-success" type="button" th:href= "@{/configFile}"  th:target="_blank">配置文件</a>
+            &nbsp;&nbsp;
             <a class="btn btn-primary" type="button" th:href= "@{/jobList}"  th:target="_blank">任务列表</a>
             &nbsp;&nbsp;
             <a class="btn btn-success" type="button" th:href= "@{/urlLimitList}"  th:target="_blank">接口限流</a>
