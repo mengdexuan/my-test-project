@@ -10,6 +10,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ServiceStatus;
 import org.apache.camel.impl.EventDrivenConsumerRoute;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,6 +37,7 @@ public class CamelRouteServiceImpl extends BaseServiceImpl<CamelRoute,CamelRoute
 	 * @param routeId
 	 */
 	@Override
+	@Async
 	public void triggerRouteStatus(String routeId) {
 		CamelRoute routeTemp = new CamelRoute();
 		routeTemp.setRouteId(routeId);

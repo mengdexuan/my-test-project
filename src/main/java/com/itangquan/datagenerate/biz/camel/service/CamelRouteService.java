@@ -18,5 +18,5 @@ public interface CamelRouteService extends BaseService<CamelRoute> {
 	 * 更新 camel 路由状态
 	 * @param routeId
 	 */
-	public void triggerRouteStatus(String routeId);
+	void triggerRouteStatus(String routeId);
 }

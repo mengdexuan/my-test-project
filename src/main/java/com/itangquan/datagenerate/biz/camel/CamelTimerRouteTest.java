@@ -35,6 +35,25 @@ public class CamelTimerRouteTest extends RouteBuilder {
 
 		from("timer://myTimer2?period=3s").autoStartup(false).bean(EchoBean.class);
 
+		String fromFtpPolicy = "sftp://192.168.4.192:22/test?username=tq&password=tq123456&binary=true&passiveMode=true&delay=100&readLock=changed&maxMessagesPerPoll=10&include=.*\\.zip&delete=true&localWorkDirectory=C:\\Users\\18514\\Desktop\\test\\tmp";
+
+		from(fromFtpPolicy).autoStartup(false).to("file://C:\\Users\\18514\\Desktop\\test")
+				.log("Downloaded file ${file:name} from sftp complete.");
+
+
+		String ftp = "ftp://localhost:21/?username=tq&password=123456&binary=true&passiveMode=true&delay=1s" +
+				"&include=.*\\.zip&delete=true&localWorkDirectory=C:\\Users\\18514\\Desktop\\test\\tmp";
+
+		from(ftp).to("file://C:\\Users\\18514\\Desktop\\test")
+				.log("Downloaded file ${file:name} from ftp complete.");
+
 	}
+
+
+
+
+
+
+
 
 }
