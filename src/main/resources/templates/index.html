@@ -7,7 +7,7 @@
 <body style="background-color: #d8d8d8">
 <div class="container-fluid" style="margin-top: 2%">
     <div class="row" style="margin-top: 10px;">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <input type="hidden" value="info" id="logType"/>
             <button class="btn btn-success" type="button" onclick="changeLog('info')">INFO日志</button>
             &nbsp;&nbsp;
@@ -16,10 +16,13 @@
             <button class="btn btn-info" type="button" onclick="emptyContainer()">清空日志</button>
             &nbsp;&nbsp;
             <button class="btn btn-warning" type="button" onclick="logTrigger()">日志打印(on/off)</button>
+        </div>
+        <div class="col-md-7">
+            &nbsp;&nbsp;
+            <a class="btn btn-info" type="button" th:href= "@{/db/}">数据库系统</a>
             &nbsp;&nbsp;
             <a class="btn btn-danger" type="button" th:href= "@{/fileList}">文件系统</a>
-        </div>
-        <div class="col-md-6">
+            &nbsp;&nbsp;
             <a class="btn btn-success" type="button" th:href= "@{/configFile}">配置文件</a>
             &nbsp;&nbsp;
             <a class="btn btn-primary" type="button" th:href= "@{/jobList}">任务列表</a>
