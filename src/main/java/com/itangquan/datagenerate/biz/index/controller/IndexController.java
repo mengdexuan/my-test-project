@@ -101,6 +101,14 @@ public class IndexController {
 	}
 
 
+	@GetMapping(value = "/fileList")
+	public String fileList(Model model) {
+
+		return "fileList";
+	}
+
+
+
 	@GetMapping(value = "/jobList")
 	public String list(Model model) {
 

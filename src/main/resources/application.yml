@@ -36,6 +36,14 @@ spring:
   thymeleaf:
     cache: false
 
+  #上传文件大小
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 2048MB
+
+
+
 
 server:
   port: 1019 #项目端口
@@ -59,6 +67,10 @@ gzh:
   make:
     bundle: false
     handle: false
+
+
+#可编辑的文件后
+can-edit-ext: txt,js,html,jsp,css,log,sh,bat,ini,config,java,yml,properties,xml,json,md,conf
 
 logging:
     level:

@@ -16,6 +16,8 @@
             <button class="btn btn-info" type="button" onclick="emptyContainer()">清空日志</button>
             &nbsp;&nbsp;
             <button class="btn btn-warning" type="button" onclick="logTrigger()">日志打印(on/off)</button>
+            &nbsp;&nbsp;
+            <a class="btn btn-danger" type="button" th:href= "@{/fileList}">文件系统</a>
         </div>
         <div class="col-md-6">
             <a class="btn btn-success" type="button" th:href= "@{/configFile}">配置文件</a>
