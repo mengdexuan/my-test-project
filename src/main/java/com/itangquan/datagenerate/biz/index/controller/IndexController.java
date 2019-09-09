@@ -16,6 +16,7 @@ import com.itangquan.datagenerate.biz.urllimit.repository.UrlLimitRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.support.StandardServletEnvironment;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -57,6 +59,20 @@ public class IndexController {
 
 	@Autowired
 	CamelRouteRepository camelRouteRepository;
+
+	@Value("${server.servlet.context-path}")
+	private String contextPath;
+
+	@Value("${server.port}")
+	private Integer port;
+
+
+	@PostConstruct
+	private void init(){
+		log.info("");
+		log.info("http://localhost:"+port+"/"+contextPath);
+		log.info("");
+	}
 
 
 	@RequestMapping("/")
