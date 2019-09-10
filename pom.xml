@@ -29,11 +29,10 @@
 
 
 	<dependencies>
-		<!--Dozer 是 Java Bean 到 Java Bean 映射器，它以递归方式将数据从一个对象复制到另一个对象-->
 		<dependency>
-			<groupId>com.github.dozermapper</groupId>
-			<artifactId>dozer-spring-boot-starter</artifactId>
-			<version>6.2.0</version>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.55</version>
 		</dependency>
 
 
@@ -41,6 +40,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<!--数据源-->

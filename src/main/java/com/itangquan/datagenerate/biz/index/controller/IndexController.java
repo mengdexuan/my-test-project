@@ -70,7 +70,7 @@ public class IndexController {
 	@PostConstruct
 	private void init(){
 		log.info("");
-		log.info("http://localhost:"+port+"/"+contextPath);
+		log.info("http://localhost:"+port+contextPath);
 		log.info("");
 	}
 
