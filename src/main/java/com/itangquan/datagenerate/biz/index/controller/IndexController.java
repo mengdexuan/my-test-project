@@ -8,7 +8,6 @@ import com.itangquan.datagenerate.biz.camel.entity.CamelRoute;
 import com.itangquan.datagenerate.biz.camel.repository.CamelRouteRepository;
 import com.itangquan.datagenerate.biz.dict.service.DictService;
 import com.itangquan.datagenerate.biz.index.dto.ConfigFileDto;
-import com.itangquan.datagenerate.biz.index.service.IndexService;
 import com.itangquan.datagenerate.biz.schedule.entity.ScheduleJob;
 import com.itangquan.datagenerate.biz.schedule.service.ScheduleJobService;
 import com.itangquan.datagenerate.biz.urllimit.entity.UrlLimit;
@@ -50,9 +49,6 @@ public class IndexController {
 
 	@Autowired
 	DictService dictService;
-
-	@Autowired
-	IndexService indexService;
 
 	@Autowired
 	UrlLimitRepository urlLimitRepository;
