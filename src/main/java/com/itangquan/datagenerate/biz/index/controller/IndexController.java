@@ -71,6 +71,16 @@ public class IndexController {
 	}
 
 
+	@RequestMapping("/test")
+	public String test(Model model) {
+
+		log.info("测试页面");
+
+		return "test";
+	}
+
+
+
 	@RequestMapping("/")
 	public String index(Model model) {
 
@@ -86,6 +96,7 @@ public class IndexController {
 
 		return "index";
 	}
+
 
 
 	@GetMapping(value = "/exit")
