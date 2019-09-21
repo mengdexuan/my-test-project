@@ -1,6 +1,6 @@
 package com.itangquan.datagenerate.config;
 
-import com.itangquan.datagenerate.biz.ssh.EchoHandler;
+import com.itangquan.datagenerate.biz.wstest.EchoHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

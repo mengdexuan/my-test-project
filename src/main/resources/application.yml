@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev1
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost:3306/my_test_project?characterEncoding=utf8
