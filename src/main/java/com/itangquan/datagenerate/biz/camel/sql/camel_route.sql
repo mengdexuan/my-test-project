@@ -1,13 +1,13 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 192.168.4.192(江苏稳定版)
-Source Server Version : 50726
+Source SshServerInfo         : 192.168.4.192(江苏稳定版)
+Source SshServerInfo Version : 50726
 Source Host           : 192.168.4.192:3306
 Source Database       : xagent
 
-Target Server Type    : MYSQL
-Target Server Version : 50726
+Target SshServerInfo Type    : MYSQL
+Target SshServerInfo Version : 50726
 File Encoding         : 65001
 
 Date: 2019-06-27 18:25:51

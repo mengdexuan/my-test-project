@@ -1,5 +1,6 @@
 package com.itangquan.datagenerate.config;
 
+import com.itangquan.datagenerate.biz.webshell.SshShellHandler;
 import com.itangquan.datagenerate.biz.wstest.EchoHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +15,18 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WsConfig implements WebSocketConfigurer {
 
-
 	@Autowired
 	EchoHandler echoHandler;
+	@Autowired
+	SshShellHandler sshShellHandler;
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
 
 		// withSockJS 声明启用支持 sockJS
 		webSocketHandlerRegistry.addHandler(echoHandler, "/echo").withSockJS();
+
+		webSocketHandlerRegistry.addHandler(sshShellHandler, "/sshShellHandler").withSockJS();
 	}
 
 

@@ -1,13 +1,13 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50527
+Source SshServerInfo         : localhost
+Source SshServerInfo Version : 50527
 Source Host           : localhost:3306
 Source Database       : my_test_project
 
-Target Server Type    : MYSQL
-Target Server Version : 50527
+Target SshServerInfo Type    : MYSQL
+Target SshServerInfo Version : 50527
 File Encoding         : 65001
 
 Date: 2019-07-07 10:41:55

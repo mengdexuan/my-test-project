@@ -1,0 +1,91 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title id="title">WEBSHELL</title>
+    <div th:replace="include/_head :: head"></div>
+    <link rel="stylesheet" type="text/css" th:href="@{/xterm.js-2.4.0/xterm.css}"/>
+    <script type="text/javascript" th:src="@{/xterm.js-2.4.0/xterm.js}"></script>
+</head>
+<body style="background-color: #cce8cf">
+<div class="container">
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-offset-8">
+            <button class="btn btn-success" type="button" onclick="refresh()">刷新</button>
+            &nbsp;&nbsp;
+            <a class="btn btn-info" type="button" th:href= "@{/webShell(id=${sshInfo.id})}" target="_blank">复制</a>
+            &nbsp;&nbsp;
+            <button class="btn btn-danger" type="button" onclick="window.close()">关闭</button>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-12" id="content_term">
+
+        </div>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+
+        var sshInfo = [[${sshInfo}]];
+
+        $("#title").text(sshInfo.username + "@" + sshInfo.hostname);
+
+        var url = ctx + "/sshShellHandler";
+
+        var sock = new SockJS(url);
+
+        var term = null;
+
+        var width = document.body.clientWidth;
+
+        sock.onopen = function (evt) {
+            console.log("socket connection open ...");
+
+            sock.send(JSON.stringify(sshInfo));
+        };
+
+        sock.onmessage = function (evt) {
+            console.log("Received Message: " + evt.data);
+
+            if (evt.data == "firstConn") {
+                //创建Term的控制台
+                term = new Terminal({
+                    // rows: 10,
+                    cols: parseInt(width/12),
+                    cursorBlink: true,
+                });
+
+                //打开指定的term
+                term.open($("#content_term").empty()[0]);
+
+                //term.on方法就是实时监控输入的字段，
+                term.on('data', function (data) {
+                    sock.send(data);
+                });
+            } else {
+                //写数据到term 控制台
+                term.write(evt.data);
+            }
+        };
+
+        sock.onclose = function (evt) {
+            console.log("closed");
+        };
+
+        //连接失败的情况
+        sock.onerror = function (evt) {
+            console.log("连接失败");
+        };
+
+        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+        window.onbeforeunload = function () {
+            sock.close();
+        }
+
+
+        function refresh() {
+            window.location = window.location;
+        }
+    </script>
+</div>
+</body>
+</html>
