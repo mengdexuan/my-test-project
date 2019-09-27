@@ -122,6 +122,13 @@ public class CamelRouteCommandLineRunner implements CommandLineRunner{
 			}else if (ServiceStatus.Stopped.name().equals(item.getStatus())){
 				routeUtil.stop(item.getRouteId());
 			}
+
+			Route memRoute = routeUtil.getRoute(item.getRouteId());
+			if (memRoute!=null){
+				item.setDescription(routeDesc(memRoute));
+				//更新描述信息
+				camelRouteService.save(item);
+			}
 		});
 
 
@@ -137,9 +144,7 @@ public class CamelRouteCommandLineRunner implements CommandLineRunner{
 
 		EventDrivenConsumerRoute routeTemp = ((EventDrivenConsumerRoute) route);
 
-		Map<String, Object> map = route.getProperties();
-
-		String description = MapUtil.getStr(map, "description");
+		String description = routeDesc(route);
 
 		camelRoute.setRouteId(route.getId());
 		camelRoute.setDescription(description);
@@ -151,6 +156,14 @@ public class CamelRouteCommandLineRunner implements CommandLineRunner{
 
 
 
+	private String routeDesc(Route route){
+
+		Map<String, Object> map = route.getProperties();
+
+		String description = MapUtil.getStr(map, "description");
+
+		return description;
+	}
 
 
 

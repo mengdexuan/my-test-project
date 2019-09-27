@@ -18,23 +18,23 @@
                     <thead>
                     <tr class="success">
                         <th width="5%">序号</th>
-                        <th>路由id</th>
-                        <th>路由状态</th>
-                        <th>路由描述</th>
-                        <th>创建时间</th>
-                        <th>操作</th>
+                        <th width="10%">路由id</th>
+                        <th width="15%">路由状态</th>
+                        <th width="60%">路由描述</th>
+                        <th width="10%">创建时间</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="camelRoute : ${camelRouteList}">
                         <td th:text="${camelRouteStat.count}"></td>
                         <td th:text="${camelRoute.routeId}"></td>
-                        <td th:text="${camelRoute.status}"></td>
+                        <td>
+                            <div class="input-group">
+                                <input type="checkbox" th:id="|statusSwitch_${camelRoute.routeId}|" th:value="${camelRoute.routeId}" checked/>
+                            </div>
+                        </td>
                         <td th:text="${camelRoute.description}"></td>
                         <td th:text="${#dates.format(camelRoute.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td>
-                            <button class="btn btn-success" th:onclick="'camelRouteTrigger(\''+${camelRoute.routeId}+'\');'">Trigger</button>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -44,9 +44,37 @@
 </div>
 <script type="text/javascript" th:inline="javascript">
 
+    var camelRouteList = [[${camelRouteList}]];
+
+
     $(document).ready(function () {
 
     })
+
+
+    for (camelRoute in camelRouteList) {
+        var id = camelRouteList[camelRoute].routeId;
+
+        $('#statusSwitch_' + id).bootstrapSwitch({
+            onText: "已启动",
+            offText: "已暂停",
+            onColor: "success",
+            offColor: "danger",
+            handleWidth: '82',
+            labelWidth: '55',
+            onSwitchChange: function (event, state) {
+                var id = $(this).val();
+                camelRouteTrigger(id);
+            }
+        })
+
+        if (camelRouteList[camelRoute].status == 'Started') {
+            $("#statusSwitch_" + id).bootstrapSwitch('state', true, true);
+        } else {
+            $("#statusSwitch_" + id).bootstrapSwitch('state', false, true);
+        }
+    }
+
 
     function refresh() {
         window.location = ctx + "/camelRouteList";
@@ -54,25 +82,28 @@
 
 
     function camelRouteTrigger(routeId) {
-        layer.confirm('确认触发路由状态切换？', {
+        /*layer.confirm('确认触发路由状态切换？', {
             btn: ['确认','取消']
         }, function(){
-            $.ajax({
-                type: "post",
-                url: ctx + "/camel/camelRoute/update",
-                dataType: "text",
-                async: false,
-                data: {
-                    routeId: routeId
-                },
-                success: function (data) {
-                    refresh();
-                },
-                error: function (err) {
-                }
-            });
+
         }, function(){
 
+        });*/
+
+
+        $.ajax({
+            type: "post",
+            url: ctx + "/camel/camelRoute/update",
+            dataType: "text",
+            async: false,
+            data: {
+                routeId: routeId
+            },
+            success: function (data) {
+                refresh();
+            },
+            error: function (err) {
+            }
         });
     }
 

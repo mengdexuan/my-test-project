@@ -2,6 +2,7 @@ package com.itangquan.datagenerate.biz.camel;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,4 +40,7 @@ public class RouteUtil {
 		}
 	}
 
+	public Route getRoute(String routeId){
+		return camelContext.getRoute(routeId);
+	}
 }
