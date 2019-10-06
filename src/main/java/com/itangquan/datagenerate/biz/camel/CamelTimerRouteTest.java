@@ -103,8 +103,9 @@ public class CamelTimerRouteTest extends RouteBuilder {
 				.log("trans file ${file:name} complete.");
 
 
-//		Direct Component(基于内存的同步消息组件)
 		/**
+		 * Direct Component(基于内存的同步消息组件)
+		 *
 		 * 使用Direct组件，生产者直接调用消费者。因此使用Direct组件的唯一开销是方法调用。
 		 *
 		 * Direct的线程模型

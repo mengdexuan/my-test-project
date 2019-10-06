@@ -1,7 +1,7 @@
 package com.itangquan.datagenerate.biz.webshell;
 
 import cn.hutool.json.JSONUtil;
-import com.google.common.collect.Maps;
+import com.itangquan.datagenerate.base.util.ConcurrentLRUCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -12,14 +12,13 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 @Component
 public class SshShellHandler extends TextWebSocketHandler{
 
 
-	private static ConcurrentMap<String, SshClient> sessionMap = Maps.newConcurrentMap();
+	private static ConcurrentLRUCache<String, SshClient> sessionMap = new ConcurrentLRUCache<>(20);
 
 
 	//关闭连接后的处理
