@@ -2,8 +2,11 @@ package com.itangquan.datagenerate.biz;
 
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.http.HttpUtil;
+import com.google.common.collect.Lists;
 import com.itangquan.datagenerate.base.Result;
 import com.itangquan.datagenerate.base.ResultUtil;
+import com.itangquan.datagenerate.base.util.HelpMe;
+import com.itangquan.datagenerate.biz.webshell.SshServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,7 +48,21 @@ public class TestController {
 
 		Object obj = null;
 
+		List<SshServerInfo> dataList = Lists.newArrayList();
 
+
+		SshServerInfo info = new SshServerInfo();
+		info.setNote("abc");
+
+		dataList.add(info);
+
+		SshServerInfo info2 = new SshServerInfo();
+		info2.setUsername("userName");
+		info2.setNote("abc2");
+		dataList.add(info2);
+
+
+		HelpMe.write2File(dataList,"log/test.json",false);
 
 
 
@@ -109,7 +127,9 @@ public class TestController {
 	public Result test3() {
 		Object obj = null;
 
+		List<SshServerInfo> dataList = HelpMe.readFromFile(SshServerInfo.class, "log/test.json");
 
+		obj = dataList;
 
 
 		return ResultUtil.buildSuccess(obj);

@@ -4,6 +4,7 @@ package com.itangquan.datagenerate.base.util;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.json.JSONUtil;
 import com.google.common.base.*;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterables;
@@ -30,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -798,13 +800,71 @@ public class HelpMe {
 
 
     /**
-     *  过滤JFinal Record 中的数据，用法与本类中的 filterList 方法类似
-     * @param list
-     * @param dataType
-     * @param paramName
-     * @param <T2>
+     * 将数据以json的格式写入某个文件中
+     * @param list  数据集合
+     * @param fileName  文件名称,eg:    abc.txt , config/test.json
+     * @param append    true:追加写入   false:覆盖写入
+     * @param <T>
+     * @return  返回是否写入成功
+     */
+    public static <T> boolean write2File(List<T> list,String fileName,boolean append) {
+
+        try {
+
+            File file = new File(fileName);
+
+            List<String> jsonList = list.stream().map(item -> {
+                return JSONUtil.toJsonStr(item);
+            }).collect(Collectors.toList());
+
+            if (append){
+                //以追加的方式写入文件
+                FileUtil.appendUtf8Lines(jsonList, file);
+            }else {
+                //以覆盖的方式写入文件
+                FileUtil.writeUtf8Lines(jsonList, file);
+            }
+
+        }catch (Exception e){
+            log.error("写入{}失败!",fileName,e);
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * 从某个文件中读取数据并返回
+     * @param dataType  返回的数据类型
+     * @param fileName  文件名称,eg:    abc.txt , config/test.json
+     * @param <T>
      * @return
      */
+    public static <T> List<T> readFromFile(Class<T> dataType,String fileName) {
+
+        List<T> list = Lists.newArrayList();
+
+        try {
+
+            File file = new File(fileName);
+
+            if (FileUtil.exist(file)){
+                List<String> jsonList = FileUtil.readUtf8Lines(file);
+
+                list = jsonList.stream().map(item -> {
+                    return JSONUtil.toBean(item, dataType);
+                }).collect(Collectors.toList());
+            }
+
+        }catch (Exception e){
+            log.error("读取{}失败！",fileName,e);
+        }
+
+
+        return list;
+    }
+
 
 
 
