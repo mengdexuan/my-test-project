@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
@@ -37,6 +39,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class IndexController {
 
+	@Autowired
+	ApplicationContext applicationContext;
 
 	@Autowired
 	Environment environment;
@@ -61,6 +65,7 @@ public class IndexController {
 
 	@Value("${server.port}")
 	private Integer port;
+
 
 
 	@PostConstruct
@@ -106,7 +111,8 @@ public class IndexController {
 
 		log.info("系统退出...");
 
-		System.exit(0);
+//		System.exit(0);
+		SpringApplication.exit(applicationContext);
 
 		return "ok";
 	}
