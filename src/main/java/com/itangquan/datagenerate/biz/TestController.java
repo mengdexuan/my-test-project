@@ -2,13 +2,14 @@ package com.itangquan.datagenerate.biz;
 
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.http.HttpUtil;
-import com.google.common.collect.Lists;
 import com.itangquan.datagenerate.base.Result;
 import com.itangquan.datagenerate.base.ResultUtil;
 import com.itangquan.datagenerate.base.util.HelpMe;
 import com.itangquan.datagenerate.biz.webshell.SshServerInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Route;
+import org.apache.camel.impl.EventDrivenConsumerRoute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,16 @@ public class TestController {
 	CamelContext camelContext;
 
 
+	public String test(String param){
+
+		String result = "";
+
+		log.info("参数：{}",param);
+
+		result = "你好："+param;
+
+		return result;
+	}
 
 
 	@GetMapping("/test1")
@@ -48,23 +59,12 @@ public class TestController {
 
 		Object obj = null;
 
-		List<SshServerInfo> dataList = Lists.newArrayList();
+		List<Route> routes = camelContext.getRoutes();
 
-
-		SshServerInfo info = new SshServerInfo();
-		info.setNote("abc");
-
-		dataList.add(info);
-
-		SshServerInfo info2 = new SshServerInfo();
-		info2.setUsername("userName");
-		info2.setNote("abc2");
-		dataList.add(info2);
-
-
-		HelpMe.write2File(dataList,"log/test.json",false);
-
-
+		routes.stream().forEach(item->{
+			EventDrivenConsumerRoute route = ((EventDrivenConsumerRoute) item);
+			log.info("路由：{}，参数：{}",item.getId(),route.getStatus());
+		});
 
 		return ResultUtil.buildSuccess(obj);
 	}
@@ -75,6 +75,8 @@ public class TestController {
 		Executor executor = Executors.newFixedThreadPool(1);
 
 		int count = 4;
+
+
 
 		for (int i =0;i<count;i++){
 			executor.execute(()->{
