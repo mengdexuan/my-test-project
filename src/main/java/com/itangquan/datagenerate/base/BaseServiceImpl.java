@@ -2,12 +2,15 @@ package com.itangquan.datagenerate.base;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.itangquan.datagenerate.base.exception.GlobalServiceException;
 import com.itangquan.datagenerate.base.util.HelpMe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Id;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -66,10 +69,55 @@ public class BaseServiceImpl<T, R extends BaseRepository<T>> implements BaseServ
 		repository.deleteAll(entities);
 	}
 
+	/**
+	 * 更新对象
+	 * 		1.先通过传入的对象的ID（修改时主键ID必传）查询出数据库中的对象
+	 * 		2.再用传入的对象的属性值更新数据库中对象的值
+	 * 		3.使用repository.save(persistentObj)将新值更新到数据库
+	 * @param t
+	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void update(T t) {
-		repository.save(t);
+		T target = null;
+
+		try {
+			target = ((Class<T>)t.getClass()).newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		BeanUtil.copyProperties(t,target);
+
+		Field[] fields = ReflectUtil.getFields(t.getClass());
+
+		for (Field field:fields){
+			Id id = field.getAnnotation(Id.class);
+			//非主键字段的值全部设置为null
+			if (id==null){
+				ReflectUtil.setFieldValue(target,field,null);
+			}else {
+				Object val = ReflectUtil.getFieldValue(t, field);
+				if (val==null){
+					throw new GlobalServiceException("修改数据，id 必填！");
+				}
+			}
+		}
+
+		//只通过主键查询数据库中的对象
+		T persistentObj = this.one(target);
+
+		for (Field field:fields){
+			Object val = ReflectUtil.getFieldValue(t, field);
+			//如果传入的字段不为空，设置到查询出的数据库对象中
+			if (val!=null){
+				ReflectUtil.setFieldValue(persistentObj,field,val);
+			}
+		}
+
+		repository.save(persistentObj);
 	}
 
 	@Override
