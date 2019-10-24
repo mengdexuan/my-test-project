@@ -72,6 +72,7 @@ public class IndexController {
 	private void init(){
 		log.info("");
 		log.info("http://localhost:"+port+contextPath);
+		log.info("http://localhost:"+port+contextPath+"/swagger-ui.html");
 		log.info("");
 	}
 
