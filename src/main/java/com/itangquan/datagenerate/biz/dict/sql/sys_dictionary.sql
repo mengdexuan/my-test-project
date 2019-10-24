@@ -28,7 +28,7 @@ CREATE TABLE `sys_dictionary` (
   `enable` smallint(1) DEFAULT NULL COMMENT '是否可用：0：不可用  1：可用',
   `order_no` int(11) DEFAULT NULL COMMENT '排序字段',
   `pid` bigint(20) DEFAULT NULL COMMENT '父级ID',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `create_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `m_key_unique` (`dict_key`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据字典';
