@@ -1,6 +1,7 @@
 package com.itangquan.datagenerate.base;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.util.ReflectUtil;
 import com.itangquan.datagenerate.base.exception.GlobalServiceException;
 import com.itangquan.datagenerate.base.util.HelpMe;
@@ -97,7 +98,10 @@ public class BaseServiceImpl<T, R extends BaseRepository<T>> implements BaseServ
 			Id id = field.getAnnotation(Id.class);
 			//非主键字段的值全部设置为null
 			if (id==null){
-				ReflectUtil.setFieldValue(target,field,null);
+				try {
+					ReflectUtil.setFieldValue(target,field,null);
+				} catch (UtilException e) {
+				}
 			}else {
 				Object val = ReflectUtil.getFieldValue(t, field);
 				if (val==null){
@@ -113,7 +117,11 @@ public class BaseServiceImpl<T, R extends BaseRepository<T>> implements BaseServ
 			Object val = ReflectUtil.getFieldValue(t, field);
 			//如果传入的字段不为空，设置到查询出的数据库对象中
 			if (val!=null){
-				ReflectUtil.setFieldValue(persistentObj,field,val);
+				try {
+					ReflectUtil.setFieldValue(persistentObj,field,val);
+				} catch (UtilException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
