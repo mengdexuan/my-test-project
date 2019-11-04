@@ -25,19 +25,19 @@ public class SwaggerConfig {
 				.apiInfo(apiInfo())
 				.select()
 				// 自行修改为自己的包路径
-				.apis(RequestHandlerSelectors.basePackage("com.itangquan.pbank"))
+				.apis(RequestHandlerSelectors.basePackage("com.itangquan"))
 				.paths(PathSelectors.any())
 				.build();
 	}
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("双流人行端")
-				.description("双流人行端 API 1.0 操作文档")
+				.title("测试项目")
+				.description("测试项目 API 1.0 操作文档")
 				//服务条款网址
 				.termsOfServiceUrl("http://www.itangquan.com")
 				.version("1.0")
-				.contact(new Contact("mengdexuan", "http://www.itangquan.com", "mengdexuan@itangquan.com"))
+				.contact(new Contact("mengdexuan", "http://www.itangquan.com", "18514756315@163.com"))
 				.build();
 	}
 
