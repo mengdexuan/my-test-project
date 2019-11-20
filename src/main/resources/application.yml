@@ -53,7 +53,7 @@ server:
   servlet:
     context-path: /testProject #项目名称
   tomcat:
-    basedir: /testProject
+    basedir: tomcatWorkDir
 
 
 #清分上传的FSN文件路径

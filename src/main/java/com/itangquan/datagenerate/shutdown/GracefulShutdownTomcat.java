@@ -1,5 +1,7 @@
 package com.itangquan.datagenerate.shutdown;
 
+import cn.hutool.core.util.RuntimeUtil;
+import cn.hutool.system.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
@@ -38,6 +40,14 @@ public class GracefulShutdownTomcat implements TomcatConnectorCustomizer,
 				if (!threadPoolExecutor.awaitTermination(waitTime, TimeUnit.SECONDS)) {
 					log.info("Tomcat thread pool did not shut down gracefully within "
 							+ waitTime + " seconds. Proceeding with forceful shutdown");
+
+					long pid = SystemUtil.getCurrentPID();
+
+					String cmd = "kill "+pid;
+
+					log.info(cmd);
+
+					RuntimeUtil.exec(cmd);
 				}
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
