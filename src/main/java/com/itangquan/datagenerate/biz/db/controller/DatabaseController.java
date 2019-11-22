@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.util.*;
@@ -28,16 +29,17 @@ public class DatabaseController {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	Connection conn = null;
 
+	@Autowired
+	DataSource dataSource;
 
 	@Value("${spring.datasource.password}")
 	String dbPwd;
 
 	@RequestMapping("/")
 	public String index(Model model) throws Exception {
-		//使用同一个连接，否则过一段时间数据库报错：太多连接
-		if (conn==null)conn = jdbcTemplate.getDataSource().getConnection();
+
+		Connection conn = dataSource.getConnection();
 
 		DatabaseMetaData metaData = conn.getMetaData();
 
@@ -50,6 +52,8 @@ public class DatabaseController {
 		model.addAttribute("password",dbPwd);
 		model.addAttribute("version",version);
 
+		conn.close();
+
 		return "database";
 	}
 
@@ -59,6 +63,9 @@ public class DatabaseController {
 	public Object getTables(HttpServletRequest request) throws Exception {
 		String tableName = request.getParameter("tableName");
 		log.info("tableName --> "+tableName);
+
+		Connection conn = dataSource.getConnection();
+
 		List<String> tableNameList = HelpMe.getTablesFromConnection(conn);
 		List<String> tmp = new ArrayList<>();
 
@@ -79,6 +86,8 @@ public class DatabaseController {
 		//逻辑分页
 //		List<List<String>> result = StreamTools.pageByNum(tableNameList, 6);
 		List<List<String>> result = Lists.partition(tmp,6);
+
+		conn.close();
 
 		return result;
 	}
